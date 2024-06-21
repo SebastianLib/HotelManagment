@@ -8,5 +8,6 @@ images,
 isFetaured,
 name,
 price,
-slug
+slug,
+coverImage
 }`
