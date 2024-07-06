@@ -4,19 +4,32 @@ import useSWR from "swr";
 import LoadingSpinner from "../../loading";
 import HotelPhotoGallery from "@/components/HotelPhotoGallery/HotelPhotoGallery";
 import { MdOutlineCleaningServices } from "react-icons/md";
-import { BiStar } from "react-icons/bi";
+import BookRoomCta from "@/components/BookRoomCta/BookRoomCta";
+import { useState } from "react";
 
 const RoomDetails = ({ params }: { params: { slug: string } }) => {
+  const [checkinDate, setCheckinDate] = useState<Date | null>(null);
+  const [checkoutDate, setCheckoutDate] = useState<Date | null>(null);
   const { slug } = params;
   const fetchRoom = async () => getRoom(slug);
-
+  
   const { data: room, error, isLoading } = useSWR("/api/room", fetchRoom);
+
 
   if (error) throw new Error("Cannot fetch data");
   if (typeof room === "undefined" && !isLoading)
     throw new Error("Cannot fetch data");
 
   if (!room) return <LoadingSpinner />;
+  
+  const calcMinCheckoutDate = () => {
+    if(checkinDate){
+      const nextDay = new Date(checkinDate);
+      nextDay.setDate(nextDay.getDate() + 1);
+      return nextDay;
+    }
+    return
+  }
 
   return (
     <div>
@@ -87,10 +100,11 @@ const RoomDetails = ({ params }: { params: { slug: string } }) => {
               </div>
               <div className="shadow dark:shadow-white rounded-lg p-6">
                   <div className="items-center mb-4">
-                    <p className="md:text-lg font-semibold">Customer Reviews</p>
+                    <p className="md:text-lg font-semibold">Customer reviews</p>
                   </div>
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <BiStar/>
+                    
                   </div>
                 </div>
             </div>
@@ -99,7 +113,18 @@ const RoomDetails = ({ params }: { params: { slug: string } }) => {
           <div
             className="md:col-span-4 rounded-xl shadow-lg dark:shadow dark:shadow-wite 
         sticky top-10 h-fit overflow-auto"
-          ></div>
+          >
+            <BookRoomCta
+            checkinDate={checkinDate}
+            setCheckinDate={setCheckinDate}
+            checkoutDate={checkoutDate}
+            setCheckoutDate={setCheckoutDate}
+            price={room.price} 
+            discount={room.discount}
+            specialNote={room.specialNote}
+            calcMinCheckoutDate={calcMinCheckoutDate}
+            />
+          </div>
         </div>
       </div>
     </div>
