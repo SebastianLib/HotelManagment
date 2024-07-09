@@ -40,7 +40,7 @@ export const createBooking = async ({
     adults,
     children,
     totalPrice,
-    discout,
+    discount,
 }: CreateBookingDto) => {
     const mutation = {
         mutations: [
@@ -55,12 +55,34 @@ export const createBooking = async ({
                     adults,
                     children,
                     totalPrice,
-                    discout,
+                    discount,
                 }
             }
         ]
     };
 
+    const {data} = await axios.post(`https://${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}.api.sanity.io/v2021-10-21/data/mutate/${process.env.NEXT_PUBLIC_SANITY_DATASET}`,{
+        mutation,
+         headers: {
+            Authorization: `Bearer ${process.env.SANITY_STUDIO_TOKEN}`
+          }
+    })
+    return data;
+}
+
+export const updateHotelRoom = async(hotelRoomId:string) => {
+    const mutation = {
+        mutations: [
+            {
+              patch:{
+                id: hotelRoomId,
+                set:{
+                    isBooked: true,
+                }
+              }
+            }
+        ]
+    };
     const {data} = await axios.post(`https://${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}.api.sanity.io/v2021-10-21/data/mutate/${process.env.NEXT_PUBLIC_SANITY_DATASET}`,{
         mutation,
          headers: {

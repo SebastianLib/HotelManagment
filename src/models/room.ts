@@ -45,5 +45,5 @@ export type CreateBookingDto = {
     adults: number;
     children: number;
     totalPrice: number;
-    discout: number;
+    discount: number;
 }
