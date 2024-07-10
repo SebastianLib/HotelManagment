@@ -20,9 +20,9 @@ export async function POST(req: Request, res: Response) {
     if (!sig || !webhookSecret) return;
     event = stripe.webhooks.constructEvent(reqBody, sig, webhookSecret);
   } catch (error: any) {
-    return new NextResponse(`Webhook Error: ${error.message}`, { status: 500 });
+    return new NextResponse(`webhook error: ${error.message}`, { status: 500 });
   }
-
+  
   // load our event
   switch (event.type) {
     case checkout_session_completed:
@@ -42,7 +42,7 @@ export async function POST(req: Request, res: Response) {
           totalPrice,
         },
       } = session;
-
+      
       await createBooking({
         adults: Number(adults),
         checkinDate,

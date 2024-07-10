@@ -32,43 +32,52 @@ export async function getRoom(slug: string) {
 }
 
 export const createBooking = async ({
-    user,
-    hotelRoom,
+    adults,
     checkinDate,
     checkoutDate,
-    numberOfDays,
-    adults,
     children,
-    totalPrice,
     discount,
-}: CreateBookingDto) => {
+    hotelRoom,
+    numberOfDays,
+    totalPrice,
+    user,
+  }: CreateBookingDto) => {console.log(    adults,
+    checkinDate,
+    checkoutDate,
+    children,
+    discount,
+    hotelRoom,
+    numberOfDays,
+    totalPrice,
+    user.split(".")[1],);
+  
     const mutation = {
-        mutations: [
-            {
-                create: {
-                    _type: "booking",
-                    user: { _type: "reference", _ref: user },
-                    hotelRoom: { _type: "reference", _ref: hotelRoom },
-                    checkinDate,
-                    checkoutDate,
-                    numberOfDays,
-                    adults,
-                    children,
-                    totalPrice,
-                    discount,
-                }
-            }
-        ]
+      mutations: [
+        {
+          create: {
+            _type: 'booking',
+            user: { _type: 'reference', _ref: user.split(".")[1] },
+            hotelRoom: { _type: 'reference', _ref: hotelRoom },
+            checkinDate,
+            checkoutDate,
+            numberOfDays,
+            adults,
+            children,
+            totalPrice,
+            discount,
+          },
+        },
+      ],
     };
-
-    const {data} = await axios.post(`https://${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}.api.sanity.io/v2021-10-21/data/mutate/${process.env.NEXT_PUBLIC_SANITY_DATASET}`,{
-        mutation,
-         headers: {
-            Authorization: `Bearer ${process.env.SANITY_STUDIO_TOKEN}`
-          }
-    })
+  
+    const { data } = await axios.post(
+      `https://${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}.api.sanity.io/v2021-10-21/data/mutate/${process.env.NEXT_PUBLIC_SANITY_DATASET}`,
+      mutation,
+      { headers: { Authorization: `Bearer ${process.env.SANITY_STUDIO_TOKEN}` } }
+    );
+  
     return data;
-}
+  };
 
 export const updateHotelRoom = async(hotelRoomId:string) => {
     const mutation = {
