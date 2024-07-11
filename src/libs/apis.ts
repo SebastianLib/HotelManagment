@@ -41,22 +41,14 @@ export const createBooking = async ({
     numberOfDays,
     totalPrice,
     user,
-  }: CreateBookingDto) => {console.log(    adults,
-    checkinDate,
-    checkoutDate,
-    children,
-    discount,
-    hotelRoom,
-    numberOfDays,
-    totalPrice,
-    user.split(".")[1],);
+  }: CreateBookingDto) => {
   
     const mutation = {
       mutations: [
         {
           create: {
             _type: 'booking',
-            user: { _type: 'reference', _ref: user.split(".")[1] },
+            user: { _type: 'reference', _ref: user},
             hotelRoom: { _type: 'reference', _ref: hotelRoom },
             checkinDate,
             checkoutDate,
@@ -79,24 +71,27 @@ export const createBooking = async ({
     return data;
   };
 
-export const updateHotelRoom = async(hotelRoomId:string) => {
+  export const updateHotelRoom = async (hotelRoomId: string) => {
+    console.log("XDDDDDDDDDDDDDDDDDDDDDDDDDDDD",hotelRoomId);
+    
     const mutation = {
-        mutations: [
-            {
-              patch:{
-                id: hotelRoomId,
-                set:{
-                    isBooked: true,
-                }
-              }
-            }
-        ]
+      mutations: [
+        {
+          patch: {
+            id: hotelRoomId,
+            set: {
+              isBooked: true,
+            },
+          },
+        },
+      ],
     };
-    const {data} = await axios.post(`https://${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}.api.sanity.io/v2021-10-21/data/mutate/${process.env.NEXT_PUBLIC_SANITY_DATASET}`,{
-        mutation,
-         headers: {
-            Authorization: `Bearer ${process.env.SANITY_STUDIO_TOKEN}`
-          }
-    })
+  
+    const { data } = await axios.post(
+      `https://${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}.api.sanity.io/v2021-10-21/data/mutate/${process.env.NEXT_PUBLIC_SANITY_DATASET}`,
+      mutation,
+      { headers: { Authorization: `Bearer ${process.env.SANITY_STUDIO_TOKEN}` } }
+    );
+  
     return data;
-}
+  };
