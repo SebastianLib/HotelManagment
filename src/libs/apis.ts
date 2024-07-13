@@ -2,6 +2,7 @@ import { CreateBookingDto, Room } from "@/models/room";
 import sanityClient from "./sanity";
 import * as queries from "./sanityQueries"
 import axios from "axios";
+import { Booking } from "@/models/booking";
 
 export async function getFeaturedRoom() {
     const result = await sanityClient.fetch<Room>(
@@ -13,11 +14,14 @@ export async function getFeaturedRoom() {
     return result;
 }
 
-export async function getRooms() {
+export async function getRooms() 
+{
     const result = await sanityClient.fetch<Room[]>(
         queries.getRoomsQuery,
         {},
         { cache: "no-cache" })
+        console.log(result);
+        
     return result
 }
 
@@ -72,7 +76,6 @@ export const createBooking = async ({
   };
 
   export const updateHotelRoom = async (hotelRoomId: string) => {
-    console.log("XDDDDDDDDDDDDDDDDDDDDDDDDDDDD",hotelRoomId);
     
     const mutation = {
       mutations: [
@@ -95,3 +98,8 @@ export const createBooking = async ({
   
     return data;
   };
+
+  export async function getUserBooking(userId:string){
+    const result = await sanityClient.fetch<Booking>(queries.getUserBookingsQuery, {userId},{cache:"no-cache"})
+  return result;
+  }
