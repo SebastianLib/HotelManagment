@@ -20,7 +20,7 @@ export async function getRooms()
         queries.getRoomsQuery,
         {},
         { cache: "no-cache" })
-        console.log(result, result);
+        console.log(result);
         
     return result
 }
