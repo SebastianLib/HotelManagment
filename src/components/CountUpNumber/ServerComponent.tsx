@@ -12,7 +12,7 @@ export const heading1 = (
 )
 
 export const section2 = (
-    <div className="md:grid hidden gap-8 grid-cols-1">
+    <div className="md:grid hidden gap-6 grid-cols-1">
     <div className="rounded-2xl overflow-hidden h-48">
       <Image
         src="/images/hero-1.jpeg"
