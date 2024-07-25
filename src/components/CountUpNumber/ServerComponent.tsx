@@ -23,7 +23,7 @@ export const section2 = (
       />
     </div>
 
-    <div className="grid grid-cols-2 gap-8 h-48">
+    <div className="grid grid-cols-2 gap-6 h-48">
       <div className="rounded-2xl overflow-hidden">
         <Image
         src="/images/hero-2.jpeg"
